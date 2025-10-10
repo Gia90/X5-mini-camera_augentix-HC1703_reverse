@@ -13,9 +13,13 @@ SoC: Augentix HC1703
 Bootloader: U-Boot 2016.03 (Aug 17 2023 - 18:00:58 +0800)
 ...
 
-## OTA Firmware header
+## Firmware
 
-The u-boot bootloader checks for a valid header in order to proceed with upgrading the firmware.  
+The factory U-boot bootloader tries to read a firmware upgrade file named `xyx.upgrade.bin` and a `xyx.config` config file from the sd card to upgrade the firmware.
+
+### Firmware upgrade file header
+
+The firmware upgrade file must have a valid header in order to be accepted by the bootloader and be flashed.  
 The header size is 64 bytes.  
 This is the header layout:
 
@@ -29,10 +33,19 @@ $\large{\color{Plum}{\textsf{Packet ID}}}$: ID used by the bootloader to compare
 $\large{\color{green}{\textsf{Firmware Checksum}}}$: CRC32 of the whole file without the header (4 bytes).  
 $\large{\color{blue}{\textsf{Version Time 2}}}$: Epoch timestamp probably used as secondary FW version time, couldn't figure out where it is used (4 bytes).  
 
-## Firmware
+### Firmware upgrade config
 
-The firmware (without the header) is what gets written to the internal NOR flash.
-This is its layout (partitions):
+The "xyx.config" can be used to control the behavior of the bootloader during the upgrade.  
+It can be used to skip the version control checks during an upgrade, by configuring it like this:
+```
+force_update=1
+
+```
+
+### Firmware layout
+
+The firmware (without the header) is what gets written to the internal NOR flash.  
+This is its layout (flash partitions):
 
 ```
 0x000000000000-0x000000040000 : "boot"
@@ -45,5 +58,5 @@ This is its layout (partitions):
 0x0000007f0000-0x000000800000 : "factory"
 ```
 
-The "bootenv" partition starts with a checksum (first 4 bytes).
-It is the CRC32 of the bootenv partition itself, without the checksum itself, in reverse bytes order. 
+The "bootenv" partition starts with a checksum.  
+It is the CRC32 of the bootenv partition itself, without the checksum part (first 4 bytes), in reverse bytes order. 
