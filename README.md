@@ -28,8 +28,8 @@ This is the header layout:
 $\large{\color{olive}{\textsf{Magic}}}$: `27 05 19 56` (4 bytes).  
 $\large{\color{RoyalPurple}{\textsf{Header Checksum}}}$: CRC32 of the header with this checksum itself (0x04 to 0x07) set to zeros (4 bytes).  
 $\large{\color{teal}{\textsf{Version Time 1}}}$: Epoch timestamp, indicating the FW version time, used for example by the bootloader to check if the current version is up to date. It avoids to reflash the fw from sdcard on reboot after an upgrade (4 bytes).  
-$\large{\color{BrickRed}{\textsf{Total Size}}}$: Total size in bytes the whole file without the header (from "#BOOT" to end) as hex value (1 byte).  
-$\large{\color{Plum}{\textsf{Packet ID}}}$: ID used by the bootloader to compare fw versions when upgrading (in combination with FW version 1) (2 bytes).  
+$\large{\color{BrickRed}{\textsf{Total Size}}}$: Total size in bytes the whole file without the header (from "#BOOT" to end) as hex value (4 byte).  
+$\large{\color{Plum}{\textsf{Packet ID}}}$: ID used by the bootloader to compare fw versions when upgrading (in combination with FW version 1) (8 bytes).  
 $\large{\color{green}{\textsf{Firmware Checksum}}}$: CRC32 of the whole file without the header (4 bytes).  
 $\large{\color{blue}{\textsf{Version Time 2}}}$: Epoch timestamp probably used as secondary FW version time, couldn't figure out where it is used (4 bytes).  
 
